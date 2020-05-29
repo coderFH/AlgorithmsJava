@@ -1,3 +1,5 @@
+package fh;
+
 public class Data {
 	public static final Object[][] BFS_01 = {
 			{"A", "B"}, {"A", "F"},

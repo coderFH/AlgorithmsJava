@@ -1,12 +1,32 @@
+package fh;
+
 import graph.Graph;
 import graph.ListGraph;
 
+import java.util.List;
+import java.util.Set;
+
 public class Main {
+	// 创建边权值管理者
+	static Graph.WeightManager<Double> weightManager = new Graph.WeightManager<Double>() {
+		@Override
+		public int compare(Double w1, Double w2) {
+			return w1.compareTo(w2);
+		}
+
+		@Override
+		public Double add(Double w1, Double w2) {
+			return w1 + w2;
+		}
+
+		@Override
+		public Double zero() {
+			return 0.0;
+		}
+	};
+
     public static void main(String[] args) {
-//		test1();
-		testDfs();
-		System.out.println("------");
-		testDfs1();
+		testmst();
     }
 
     /*
@@ -56,13 +76,19 @@ public class Main {
 				return false;
 			}
 		});
+
+		// 如果接口里只有一个方法,Java允许这么写,类似于匿名函数(lambda表达式)
+		graph.bfs("V1",(String s)->{
+			System.out.println(s);
+			return false;
+		});
 	}
 
 	/**
 	 * 利用Data构造复杂的数据 -----有向图
 	 */
 	private static Graph<Object, Double> directedGraph(Object[][] data) {
-		Graph<Object, Double> graph = new ListGraph<>();
+		Graph<Object, Double> graph = new ListGraph<>(weightManager);
 		for (Object[] edge : data) {
 			if (edge.length == 1) { // 添加一个点(是孤独的)
 				graph.addVertex(edge[0]);
@@ -81,7 +107,7 @@ public class Main {
 	 * 利用Data构造复杂的数据 -----无向图
 	 */
 	private static Graph<Object, Double> undirectedGraph(Object[][] data) {
-		Graph<Object, Double> graph = new ListGraph<>();
+		Graph<Object, Double> graph = new ListGraph<>(weightManager);
 		for (Object[] edge : data) {
 			if (edge.length == 1) {
 				graph.addVertex(edge[0]);
@@ -140,5 +166,33 @@ public class Main {
 				return false;
 			}
 		});
+	}
+
+	/*
+	* 测试拓扑排序
+	* */
+	static void testTopo() {
+		Graph<Object, Double> graph = directedGraph(Data.TOPO);
+		List<Object> list = graph.topologicalSort();
+		System.out.println(list);
+	}
+
+	/*
+	 * 测试最小生成树
+	 * */
+	static void testmst() {
+		Graph<Object, Double> graph = undirectedGraph(Data.MST_01);
+		Set<Graph.EdgeInfo<Object, Double>> infos = graph.mst();
+		for (Graph.EdgeInfo<Object, Double> info : infos) {
+			System.out.println(info);
+		}
+
+		System.out.println("------");
+
+		Graph<Object, Double> graph1 = undirectedGraph(Data.MST_02);
+		Set<Graph.EdgeInfo<Object, Double>> infos1 = graph1.mst();
+		for (Graph.EdgeInfo<Object, Double> info : infos1) {
+			System.out.println(info);
+		}
 	}
 }

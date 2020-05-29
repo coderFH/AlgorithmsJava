@@ -1,5 +1,7 @@
 package graph;
 
+import fh.MinHeap;
+
 import java.util.*;
 
 public class ListGraph<V,E> extends Graph<V,E> {
@@ -8,6 +10,19 @@ public class ListGraph<V,E> extends Graph<V,E> {
 
     // 存放该图的所有边
     private Set<Edge<V,E>> edges = new HashSet<>();
+
+    // 边的比较器
+    private Comparator<Edge<V,E>> edgeComparator = (Edge<V,E> e1,Edge<V,E> e2) -> {
+        return weightManager.compare(e1.weight,e2.weight);
+    };
+
+    /*
+    * 构造函数
+    * */
+    public ListGraph() {}
+    public ListGraph(WeightManager<E> weightManager) {
+        super(weightManager);
+    }
 
     @Override
     public int verticesSize() {
@@ -165,9 +180,6 @@ public class ListGraph<V,E> extends Graph<V,E> {
         }
     }
 
-    /*
-    * 深度优先搜索递归实现---知道即可
-    * */
     @Override
     public void dfs(V begin) {
         Vertex<V,E> beginVertex = vertices.get(begin);
@@ -184,6 +196,78 @@ public class ListGraph<V,E> extends Graph<V,E> {
         }
     }
 
+    @Override
+    public List<V> topologicalSort() {
+        List<V> list = new ArrayList<>(); // 用于存放遍历元素的数据
+        Queue<Vertex<V,E>> queue = new LinkedList<>();
+        Map<Vertex<V,E>,Integer> ins = new HashMap<>();
+        // 初始化(将度为0的节点都放入队列)
+        vertices.forEach((V v,Vertex<V,E> vertex)->{
+            int in = vertex.inEdges.size();
+            if (in == 0) { // 如果入度是0,就入队
+                queue.offer(vertex);
+            } else { // 否则 就加入map中,key是顶点 value是该顶点入度的个数
+                ins.put(vertex,in);
+            }
+        });
+        while (!queue.isEmpty()) {
+            Vertex<V,E> vertex = queue.poll(); // 出队
+            list.add(vertex.value); // 取到的值放入到列表中
+
+            for (Edge<V,E> edge : vertex.outEdges) { // 然后遍历这个节点的出度
+                int toIn = ins.get(edge.to) - 1; // 通过边找到to的顶点,然后to顶点的所有入度个数-1
+                if (toIn == 0) {// 当发现入度减为0了,就入队
+                    queue.offer(edge.to);
+                } else {
+                    ins.put(edge.to,toIn);// 否则更新map,更新顶点的入度的个数
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Set<EdgeInfo<V, E>> mst() {
+        // 在这里可以决定是调用prim算法还是kruskal算法,去生成最小生成树
+//        return Math.random() > 0.5 ? prim() : kruskal();
+        return prim();
+    }
+
+    /*
+    * 最小生成树的prim算法
+    * */
+    private Set<EdgeInfo<V, E>> prim() {
+        Iterator<Vertex<V,E>> it = vertices.values().iterator();// 从vertices的字典中取出所有的value值,也就是顶点,然后 通过迭代器拿出一个顶点
+        if (!it.hasNext()) return null;// 如果没有next,直接返回
+        Vertex<V,E> vertex = it.next();//  取出一个顶点
+
+        Set<EdgeInfo<V,E>> edgeInfos = new HashSet<>(); // 存放顶点信息
+        Set<Vertex<V,E>> addedVertices = new HashSet<>(); // 记录分割过的顶点
+        addedVertices.add(vertex); // 分割过,就加入addedVertices
+
+        MinHeap<Edge<V,E>> heap = new MinHeap<>(vertex.outEdges,edgeComparator);// 利用最小堆,找出权重最小的边
+
+        int verticesSize = vertices.size();
+        while (!heap.isEmpty() && addedVertices.size() < verticesSize) {// 最小堆不为空 && 记录分割顶点的个数 < 该图的顶点个数
+            Edge<V,E> edge = heap.remove();// 从二叉堆中移除最小权值的这条边
+            if (addedVertices.contains(edge.to)) continue;;
+            edgeInfos.add(edge.info());
+            addedVertices.add(edge.to);   // 标记已经分割
+            heap.addAll(edge.to.outEdges);// 再把该边对应的to顶点的outEdges建堆
+        }
+        return edgeInfos;
+    }
+
+    /*
+    * 最小生成树的kruskal算法
+    * */
+    private Set<EdgeInfo<V, E>> kruskal() {
+        return null;
+    }
+
+    /*
+    * 打印图的信息
+    * */
     public void print() {
         System.out.println("[顶点]-------------------");
         vertices.forEach((V v, Vertex<V, E> vertex) -> {
@@ -203,7 +287,7 @@ public class ListGraph<V,E> extends Graph<V,E> {
     /*
     * 顶点
     * */
-    private static class  Vertex<V,E> {
+    private static class Vertex<V,E> {
         V value;                                  // 定点的值
         Set<Edge<V,E>> inEdges = new HashSet<>(); // 从该顶点进去的边
         Set<Edge<V,E>> outEdges = new HashSet<>();// 从该顶点出去的边
@@ -237,6 +321,13 @@ public class ListGraph<V,E> extends Graph<V,E> {
         Edge(Vertex<V,E> from, Vertex<V,E> to) {
             this.from = from;
             this.to = to;
+        }
+
+        /*
+        * 返回边的信息
+        * */
+        EdgeInfo<V,E> info() {
+            return new EdgeInfo<>(from.value,to.value,weight);
         }
 
         // 因为在添加边的时候,会判断顶点的inEdges和outEdges里是否存在边,因为用的是hashmap,所以需要重写equals和hashCode方法
