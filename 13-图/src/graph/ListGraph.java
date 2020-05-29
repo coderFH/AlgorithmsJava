@@ -1,6 +1,7 @@
 package graph;
 
 import fh.MinHeap;
+import fh.UnionFind;
 
 import java.util.*;
 
@@ -230,8 +231,10 @@ public class ListGraph<V,E> extends Graph<V,E> {
     public Set<EdgeInfo<V, E>> mst() {
         // 在这里可以决定是调用prim算法还是kruskal算法,去生成最小生成树
 //        return Math.random() > 0.5 ? prim() : kruskal();
-        return prim();
+//        return prim();
+        return kruskal();
     }
+
 
     /*
     * 最小生成树的prim算法
@@ -262,7 +265,23 @@ public class ListGraph<V,E> extends Graph<V,E> {
     * 最小生成树的kruskal算法
     * */
     private Set<EdgeInfo<V, E>> kruskal() {
-        return null;
+        int edgeSize = vertices.size() -1;
+        if (edgeSize == -1) return null; // 没有任何一个点,就返回
+        Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
+        MinHeap<Edge<V, E>> heap = new MinHeap<>(edges, edgeComparator);// 利用最小堆,找出权重最小的边
+        UnionFind<Vertex<V, E>> uf = new UnionFind<>();
+
+        vertices.forEach((V v,Vertex<V,E> vertex)->{
+            uf.makeSet(vertex);
+        });
+
+        while (!heap.isEmpty() && edgeInfos.size() < edgeSize) {
+            Edge<V,E> edge = heap.remove();
+            if (uf.isSame(edge.from,edge.to)) continue;
+            edgeInfos.add(edge.info());
+            uf.union(edge.from,edge.to);
+        }
+        return edgeInfos;
     }
 
     /*
