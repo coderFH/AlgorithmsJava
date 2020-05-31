@@ -284,6 +284,39 @@ public class ListGraph<V,E> extends Graph<V,E> {
         return edgeInfos;
     }
 
+    @Override
+    public Map<V, E> shorttestPath(V begin) {
+
+        Vertex<V,E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) return null;
+
+        Map<V,E> selectPaths = new HashMap<>(); // 返回路径信息的map
+        Map<Vertex<V,E>,E> paths = new HashMap<>(); // 临时
+
+
+
+        return  selectPaths;
+
+    }
+
+    /**
+     * 从paths中挑一个最小的路径出来
+     * @param paths
+     * @return
+     */
+    private Map.Entry<Vertex<V,E>,E> getMinPath(Map<Vertex<V,E>,E> paths) {
+        Iterator<Map.Entry<Vertex<V,E>,E>> it = paths.entrySet().iterator();
+        Map.Entry<Vertex<V,E>,E> minEntry = it.next();
+        while (it.hasNext()) {
+            Map.Entry<Vertex<V,E>,E> entry = it.next();
+            if (weightManager.compare(entry.getValue(),minEntry.getValue()) < 0) { // 权值进行比较
+                minEntry = entry;
+            }
+        }
+        return minEntry;
+    }
+
+
     /*
     * 打印图的信息
     * */

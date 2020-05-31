@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class Graph<V,E> {
@@ -76,6 +77,11 @@ public abstract class Graph<V,E> {
      * @return 返回边信息
      */
     public abstract Set<EdgeInfo<V,E>> mst();
+
+    /*
+    * 最短路径
+    * */
+    public abstract Map<V,E> shorttestPath(V begin);
 
     /*
     * 遍历接口
