@@ -4,6 +4,7 @@ import graph.Graph;
 import graph.ListGraph;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Main {
@@ -26,7 +27,7 @@ public class Main {
 	};
 
     public static void main(String[] args) {
-		testmst();
+		testShortPathFloyd();
     }
 
     /*
@@ -194,5 +195,44 @@ public class Main {
 		for (Graph.EdgeInfo<Object, Double> info : infos1) {
 			System.out.println(info);
 		}
+	}
+
+	/*
+	* 测试最短路径
+	* */
+	static void testShortPath() {
+//		Graph<Object, Double> graph = undirectedGraph(Data.SP);
+		Graph<Object, Double> graph = directedGraph(Data.SP);
+		Map<Object,Double> sp = graph.shortestPath("A");
+		System.out.println(sp);
+	}
+
+	/*
+	 * 测试最短路径,使用打印路径信息的版本
+	 * */
+	static void testShortPathDetail() {
+		Graph<Object, Double> graph = directedGraph(Data.SP);
+//		Graph<Object, Double> graph = directedGraph(Data.NEGATIVE_WEIGHT1);
+		Map<Object, Graph.PathInfo<Object,Double>> sp = graph.shortestDetailPath("A");
+		if (sp == null) return;
+		sp.forEach((Object v, Graph.PathInfo<Object,Double> path) -> {
+			System.out.println(v + " - " + path);
+		});
+	}
+
+	/*
+	 * 测试最短路径,floyd算法,多源最短路径算法
+	 * */
+	static void testShortPathFloyd() {
+//		Graph<Object, Double> graph = directedGraph(Data.SP);
+		Graph<Object, Double> graph = directedGraph(Data.NEGATIVE_WEIGHT1);
+		Map<Object, Map<Object, Graph.PathInfo<Object,Double>>> sp = graph.shortestPath();
+		if (sp == null) return;
+		sp.forEach((Object from, Map<Object, Graph.PathInfo<Object,Double>> paths) -> {
+			System.out.println(from + " ------ ");
+			paths.forEach((Object to, Graph.PathInfo<Object,Double> path) ->{
+				System.out.println(to + "-" + path);
+			});
+		});
 	}
 }

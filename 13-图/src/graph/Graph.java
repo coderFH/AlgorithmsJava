@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,7 +68,7 @@ public abstract class Graph<V,E> {
     public abstract void dfs(V begin, VertexVisitor<V> visitor); // 迭代实现
 
     /*
-    * 拓扑排序
+    * 拓扑排序-按照一个的依赖进行排序
     * */
     public abstract List<V> topologicalSort();
 
@@ -78,10 +79,28 @@ public abstract class Graph<V,E> {
      */
     public abstract Set<EdgeInfo<V,E>> mst();
 
+    /**
+     *
+     * 最短路径(从一个点出发,到其他任意一个点的最短路径),单源路径算法
+     * @param 起点
+     * @return 字典  key:最终要到达点的顶点值   value: 起点到顶点的权重值
+     * {B=10.0, C=50.0, D=30.0, E=60.0}
+     * 即 A 到 E 的最短路径值是 60 具体看Dijkstra-执行过程的ppt
+     */
+    public abstract Map<V,E> shortestPath(V begin);
+
     /*
-    * 最短路径
+    * 最短路径---- 单源路径算法
+    * 上边那个求最短路径的方法不够全面,只有起点到达某个顶点的权重信息,没有路径信息
+    * 该方法会即返回路径信息,也返回权值信息
     * */
-    public abstract Map<V,E> shorttestPath(V begin);
+    public abstract Map<V,PathInfo<V,E>> shortestDetailPath(V begin);
+
+    /*
+    * 最短路径(任意顶点到其他顶点的最短路径),即多源路径算法
+    * floyd算法
+    * */
+    public abstract Map<V, Map<V, PathInfo<V, E>>> shortestPath();
 
     /*
     * 遍历接口
@@ -141,5 +160,38 @@ public abstract class Graph<V,E> {
         int compare(E w1,E w2); //权重比较
         E add(E w1,E w2);       // 权重相加
         E zero();               // 权重清零
+    }
+
+    /*
+    * 最短路径需要的边的信息以及权重
+    * eg: A到E的最短路径信息以及权重 A->D->E 60
+    * */
+    public static class PathInfo<V, E> {
+        protected E weight; // 该路径的权值
+        protected List<EdgeInfo<V, E>> edgeInfos = new LinkedList<>(); // 该路径包含哪些边
+
+        public PathInfo() {}
+        public PathInfo(E weight) {
+            this.weight = weight;
+        }
+
+        public E getWeight() {
+            return weight;
+        }
+        public void setWeight(E weight) {
+            this.weight = weight;
+        }
+
+        public List<EdgeInfo<V, E>> getEdgeInfos() {
+            return edgeInfos;
+        }
+        public void setEdgeInfos(List<EdgeInfo<V, E>> edgeInfos) {
+            this.edgeInfos = edgeInfos;
+        }
+
+        @Override
+        public String toString() {
+            return "PathInfo [weight=" + weight + ", edgeInfos=" + edgeInfos + "]";
+        }
     }
 }
