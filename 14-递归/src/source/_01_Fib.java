@@ -1,8 +1,11 @@
 package source;
 
-public class Fib {
+/**
+ * 斐波那契数
+ */
+public class _01_Fib {
     public static void main(String[] args) {
-        Fib fib = new Fib();
+        _01_Fib fib = new _01_Fib();
         int n = 50;
 
         tool.Times.test("fib0",()->{
