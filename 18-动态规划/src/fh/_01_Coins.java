@@ -20,7 +20,7 @@
 
 package fh;
 
-public class Coins {
+public class _01_Coins {
     // 假设有25 20 5 1 的硬币,要找给客户41分的零钱,如何办到硬币个数最少?
     public static void main(String[] args) {
         System.out.println("暴力法: " + coins(6));
