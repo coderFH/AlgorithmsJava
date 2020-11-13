@@ -1,3 +1,5 @@
+import sun.jvm.hotspot.oops.Array;
+
 /*
 给定一个按非递减顺序排序的整数数组 A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序。 
 
@@ -21,5 +23,12 @@ A 已按非递减顺序排序。
 链接：https://leetcode-cn.com/problems/squares-of-a-sorted-array
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
-public class _977_有序数组的平方 {
+public class _06_977_有序数组的平方_未做_作业 {
+//    static public int[] sortedSquares(int[] A) {
+//
+//    }
+//
+//    public static void main(String[] args) {
+//        sortedSquares(new int[]{-1,-1,-1});
+//    }
 }
