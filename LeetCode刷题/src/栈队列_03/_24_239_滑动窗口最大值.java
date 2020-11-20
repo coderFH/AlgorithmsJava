@@ -65,9 +65,4 @@ public class _24_239_滑动窗口最大值 {
         }
         return maxes;
     }
-
-    public int[] maxSlidingWindow1(int[] nums, int k) {
-        
-    }
-
 }
