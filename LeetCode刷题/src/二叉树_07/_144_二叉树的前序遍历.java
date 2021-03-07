@@ -6,26 +6,11 @@ package 二叉树_07;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _144_二叉树的前序遍历 {
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
+public class _144_二叉树的前序遍历 extends _00_baseTree {
 
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
-
+    /*
+     * 1.递归实现
+     * */
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         preorder(root,res);
@@ -38,4 +23,8 @@ public class _144_二叉树的前序遍历 {
         preorder(root.left,res);
         preorder(root.right,res);
     }
+
+    /*
+     * 2.迭代实现
+     * */
 }

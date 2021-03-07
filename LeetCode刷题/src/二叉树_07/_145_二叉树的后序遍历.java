@@ -6,20 +6,11 @@ package 二叉树_07;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _145_二叉树的后序遍历 {
-    public class TreeNode {
-      int val;
-      TreeNode left;
-      TreeNode right;
-      TreeNode() {}
-      TreeNode(int val) { this.val = val; }
-      TreeNode(int val, TreeNode left, TreeNode right) {
-          this.val = val;
-          this.left = left;
-          this.right = right;
-      }
-    }
+public class _145_二叉树的后序遍历 extends _00_baseTree {
 
+    /*
+     * 1.递归实现
+     * */
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<Integer>();
         postorder(root,res);
@@ -32,4 +23,8 @@ public class _145_二叉树的后序遍历 {
         postorder(root.right,res);
         res.add(root.val);
     }
+
+    /*
+     * 2.迭代实现
+     * */
 }
