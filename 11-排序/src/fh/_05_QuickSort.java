@@ -5,7 +5,6 @@ public class _05_QuickSort {
 
     }
 
-    static void
 
     public static void main(String[] args) {
         int[] array = {9,8,7,6,3,4,2,1};

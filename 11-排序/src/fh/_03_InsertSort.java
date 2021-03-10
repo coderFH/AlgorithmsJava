@@ -63,7 +63,7 @@ public class _03_InsertSort {
     }
 
     public static void main(String[] args) {
-        int[] array = {9,8,7,6,3,4,2,1};
+        int[] array = {1,2,3,4,2,5,4,3};
         InsertSort2(array);
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i]+ "_");
