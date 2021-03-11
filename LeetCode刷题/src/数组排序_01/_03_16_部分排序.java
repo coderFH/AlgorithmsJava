@@ -16,8 +16,8 @@ package 数组排序_01;
 链接：https://leetcode-cn.com/problems/sub-sort-lcci
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
-// 从左往右遍历 找 左边的范围,正常情况,从左往右依次增大,发现有逆序的,就记录其位置
-// 从右往左遍历 找 右边的范围,正常情况,从右往左依次减小,发现有逆序的,就记录其位置
+// 从左往右遍历 找 右边的范围,正常情况,从左往右依次增大,发现有逆序的,就记录其位置(不要疑惑了,又不是发现第一个逆序对就不往后遍历了)
+// 从右往左遍历 找 左边的范围,正常情况,从右往左依次减小,发现有逆序的,就记录其位置
 */
 public class _03_16_部分排序 {
     static public int[] subSort(int[] array) {
@@ -42,30 +42,6 @@ public class _03_16_部分排序 {
             }
         }
         return new int[]{l,r};
-    }
-
-    static public int[] subSort1(int[] array) {
-        if (array.length == 0) return new int[]{-1,-1};
-        int max = array[0];
-        int right = -1;
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] >= max) {
-                max = array[i];
-            } else  {
-                right = i;
-            }
-        }
-        if (right == -1) return new int[]{-1,-1};
-        int min = array[array.length -1];
-        int left = -1;
-        for (int i = array.length - 2; i >=0 ; i--) {
-            if (array[i] <= min) {
-                min = array[i];
-            } else {
-                left = i;
-            }
-        }
-        return new int[]{left,right};
     }
 
     public static void main(String[] args) {

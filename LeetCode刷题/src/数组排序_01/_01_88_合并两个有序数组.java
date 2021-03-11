@@ -18,25 +18,15 @@ package 数组排序_01;
 链接：https://leetcode-cn.com/problems/merge-sorted-array
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
-既然是有序数组,就从后往前遍历,这样处理合并会更方便
 
-思路: 注意nums1的下标越界情况
 */
 public class _01_88_合并两个有序数组 {
+    /*
+    * 思路:
+    * 先定义两个index指向数组元素有效数组的最后,然后分别的往前依次比较
+    * 既然是有序数组,就从后往前遍历,这样处理合并会更方便 注意nums1的下标越界情况
+    * */
     static public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int i1 = m-1;
-        int i2 = n-1;
-        int cur = nums1.length -1;
-        while (i2 >= 0) {
-            if (i1 >= 0 && nums2[i2] < nums1[i1]) {
-                nums1[cur--] = nums1[i1--];
-            } else {
-                nums1[cur--] = nums2[i2--];
-            }
-        }
-    }
-
-    static public void merge2(int[] nums1, int m, int[] nums2, int n) {
         int firstInx = m - 1;
         int secondIndx = n - 1;
         int lastIdx = nums1.length - 1;
@@ -52,6 +42,6 @@ public class _01_88_合并两个有序数组 {
     public static void main(String[] args) {
         int[] num1 = new int[]{1,2,3,0,0,0};
         int[] num2 = new int[]{2,5,6};
-        merge2(num1,3,num2,3);
+        merge(num1,3,num2,3);
     }
 }
