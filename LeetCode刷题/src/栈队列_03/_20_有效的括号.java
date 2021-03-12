@@ -1,4 +1,4 @@
-package 链表_02;
+package 栈队列_03;
 
 import java.util.HashMap;
 import java.util.Stack;
