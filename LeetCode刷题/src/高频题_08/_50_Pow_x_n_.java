@@ -24,6 +24,11 @@ public class _50_Pow_x_n_ {
      * 解法2: 递归实现
      * */
     public double myPow2(double x, int n) {
-
+        if (n == 0) return 1;
+        if (n == -1) return 1 / x;
+        double half = myPow2(x, n >> 1);
+        half *= half;
+        // 是否为奇数
+        return  ((n & 1) == 1) ? (half * x) : half;
     }
 }
