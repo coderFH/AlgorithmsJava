@@ -5,7 +5,7 @@ public class _01_BubbleSort {
     /*
     * 内层for循环是两两比较的逻辑,每经过一次for循环,最后的元素一定是最大值
     * 外层for循环控制比较的趟数,因为经过一次内层的for循环之后,最大值已经跑到了最后,即后边是有序的了,所以要end--
-    * end>0的逻辑的end最小可以为1,此时内层比较的就是array[0]与array[1]进行比较
+    * end>0的逻辑中的end最小可以为1,此时内层比较的就是array[0]与array[1]进行比较
     * 内层for循环的条件是begin<=end,要包含最后一个元素,因为外层的end是array.length - 1
     * 关于稳定性?
     *   array[begin] < array[begin - 1]
@@ -13,8 +13,8 @@ public class _01_BubbleSort {
     *   但如果条件写成了 <= 就不稳定了
     * */
     static void BubbleSort(int[] array) {
-        for (int end = array.length - 1; end > 0;end--) {
-            for (int begin = 1; begin <= end; begin++) {
+        for (int end = array.length - 1; end > 0;end--) { // 趟数
+            for (int begin = 1; begin <= end; begin++) {  // 内层的两两比较
                 if (array[begin] < array[begin - 1]) {
                     int tmp = array[begin];
                     array[begin] = array[begin - 1];

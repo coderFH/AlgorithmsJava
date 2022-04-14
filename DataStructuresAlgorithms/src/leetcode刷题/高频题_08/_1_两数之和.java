@@ -3,6 +3,7 @@ package leetcode刷题.高频题_08;
 import java.util.HashMap;
 
 /*
+    nums = [2,7,11,15], target = 9
 * https://leetcode-cn.com/problems/two-sum/submissions/
 * */
 public class _1_两数之和 {
